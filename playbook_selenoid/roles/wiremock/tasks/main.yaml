@@ -1,0 +1,22 @@
+---
+- name: Ensure WireMock directory exists
+  file:
+    path: "{{ wiremock_directory }}"
+    state: directory
+
+- name: Copy WireMock mappings
+  copy:
+    src: "../files/stub_mappings/"
+    dest: "{{ wiremock_directory }}/mappings"
+    remote_src: yes
+
+- name: Start WireMock container
+  community.docker.docker_container:
+    name: wiremock_server
+    image: wiremock/wiremock:latest
+    restart_policy: always
+    published_ports:
+      - "8080:8080"
+    volumes:
+      - "{{ wiremock_directory }}/mappings:/home/dima/wiremock/mappings"
+    state: started

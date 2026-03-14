@@ -1,0 +1,9 @@
+
+<!DOCTYPE FindBugsFilter PUBLIC "-//FindBugs//DTD Findbugs Filter 1.0//EN"
+        "http://findbugs.sourceforge.net/findbugs_filter_1_0.dtd">
+
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Match>
+</FindBugsFilter>
