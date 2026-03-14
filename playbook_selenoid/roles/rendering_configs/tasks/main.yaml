@@ -1,0 +1,106 @@
+---
+- name: Create directory for Selenoid config
+  file:
+    path: /etc/selenoid
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  tags: selenoid_config
+
+- name: Render Selenoid config
+  template:
+    src: "templates/browsers.json.j2"
+    dest: "/etc/selenoid/browsers.json"
+  vars:
+    chrome_version1: 128.0
+    chrome_version2: 127.0
+    firefox_version1: 112.0
+    firefox_version2: 111.0
+  tags: render_browsers
+
+- name: Check if docker image exists
+  shell: |
+    docker inspect selenoid/{{ item.image }}:{{ item.version }} &> /dev/null && echo "exists" || echo "not found"
+  register: image_check_results
+  loop:
+    - image: "chrome"
+      version: "128.0"
+    - image: "chrome"
+      version: "127.0"
+    - image: "firefox"
+      version: "112.0"
+    - image: "firefox"
+      version: "111.0"
+  tags: selenoid_images
+
+- name: Pull docker images manually
+  community.docker.docker_image:
+    name: "selenoid/{{ item.image }}"
+    tag: "{{ item.version }}"
+    source: pull
+    state: present
+  loop:
+    - image: "chrome"
+      version: "128.0"
+    - image: "chrome"
+      version: "127.0"
+    - image: "firefox"
+      version: "112.0"
+    - image: "firefox"
+      version: "111.0"
+  tags: selenoid_images
+
+- name: Create docker networks
+  community.docker.docker_network:
+    name: "{{ item }}"
+  loop:
+    - "selenoid1"
+    - "selenoid2"
+  tags: selenoid_config
+
+- name: Create docker-compose.yaml for selenoid
+  template:
+    src: "../compose/config/docker-compose.yaml.j2"
+    dest: "/etc/selenoid/docker-compose.yaml"
+  vars:
+    network1: "selenoid1"
+    network2: "selenoid2"
+    selenoid_path: "/etc/selenoid"
+  tags: render_docker_compose
+
+- name: Create grid-router folder
+  file:
+    path: "/etc/selenoid/grid-router/quota"
+    state: directory
+  tags: selenoid_config
+
+- name: Render the grid router configuration file
+  template:
+    src: "{{ playbook_dir }}/templates/grid_router.json.j2"
+    dest: "/etc/selenoid/grid_router.json"
+    owner: root
+    group: root
+    mode: 0644
+  tags: Render the grid router
+
+- name: Create quota file for ggr
+  template:
+    src: "templates/test.xml.j2"
+    dest: "/etc/selenoid/grid-router/quota/test.xml"
+  vars:
+    browser_version1: 128.0
+    browser_version2: 127.0
+  tags: selenoid_config
+
+- name: Create Selenoid Nginx config
+  template:
+    src: "templates/selenoid.conf.j2"
+    dest: "{{ selenoid_path }}/selenoid.conf"
+  tags: selenoid_config
+
+- name: Running selenoid via docker-compose orchestration
+  community.docker.docker_compose_v2:
+    project_src: /etc/selenoid
+    state: present
+  tags: render_docker_compose

@@ -1,0 +1,25 @@
+---
+chrome_default_version: latest
+chrome_versions:
+  - "128.0"
+  - "127.0"
+
+firefox_default_version: latest
+firefox_versions:
+  - "112.0"
+  - "111.0"
+
+ansible_user: "{{ lookup('env', 'ANSIBLE_USER') }}"
+ansible_password: "{{ lookup('env', 'ANSIBLE_PASSWORD') }}"
+ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}"
+
+selenoid_version: 1.11.3
+network1: selenoid_net1
+network2: selenoid_net2
+selenoid_path: /etc/selenoid
+
+configs_dir: "/etc/selenoid"
+logs_dir: "/var/log/selenoid"
+selenoid_port: 4444
+selenoid_ui_port: 8080
+compose_config_dir: "{{ configs_dir }}/compose"

@@ -1,0 +1,17 @@
+---
+- name: Setup Selenoid
+  hosts: localhost
+  become: true
+  gather_facts: true
+  pre_tasks:
+    - include_tasks: pre_tasks.yaml
+  vars_files:
+    - group_vars/selenoid.yaml
+
+  roles:
+    - common
+    - docker
+    - docker_compose
+    - rendering_configs
+    - wiremock
+    - run_tests

@@ -1,0 +1,6 @@
+---
+selenoid_path: "/etc/selenoid"
+tests_directory: "/home/dima"
+branch_or_tag: "main"
+GIT_REPO_URL: "https://github.com/dimamoryk/AutotestWithSelenoid.git"
+browser_type: "chrome"

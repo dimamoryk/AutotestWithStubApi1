@@ -1,0 +1,51 @@
+services:
+  selenoid1:
+    image: aerokube/selenoid:latest
+    hostname: selenoid1
+    networks:
+      - selenoid_net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/selenoid/browsers.json:/etc/selenoid/browsers.json:ro
+    ports:
+      - "4444:4444"
+    command: -container-network selenoid_net -limit 10
+  selenoid2:
+    image: aerokube/selenoid:latest
+    hostname: selenoid2
+    networks:
+      - selenoid_net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/selenoid/browsers.json:/etc/selenoid/browsers.json:ro
+    ports:
+      - "4446:4444"
+    command: -container-network selenoid_net -limit 10
+  ggr:
+    image: aerokube/ggr:1.7.2
+    hostname: ggr
+    networks:
+      - selenoid_net
+    volumes:
+      - /etc/selenoid/grid-router:/etc/grid-router:ro
+    command: -guests-allowed -guests-quota "test" -verbose
+    depends_on:
+      - selenoid1
+      - selenoid2
+  ui:
+    image: aerokube/selenoid-ui:latest
+    hostname: selenoid-ui
+    networks:
+      - selenoid_net
+    ports:
+      - "8080:8080"
+    links:
+      - selenoid1
+      - selenoid2
+    depends_on:
+      - selenoid1
+      - selenoid2
+networks:
+  selenoid_net:
+    name: ${NETWORK_NAME:-selenoid_net}
+    external: true
