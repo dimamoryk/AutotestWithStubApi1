@@ -1,7 +1,10 @@
 {
-  "type": "random",
-  "weight": [
-    {"host": "selenoid1", "weight": 1},
-    {"host": "selenoid2", "weight": 1}
-  ]
+    "quota": {
+        "test": {
+            "browser": [
+                { "name": "chrome", "count": 5, "versions": ["latest"] },
+                { "name": "firefox", "count": 5, "versions": ["latest"] }
+            ]
+        }
+    }
 }

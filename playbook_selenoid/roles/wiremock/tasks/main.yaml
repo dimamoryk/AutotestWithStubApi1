@@ -6,9 +6,9 @@
 
 - name: Copy WireMock mappings
   copy:
-    src: "../files/stub_mappings/"
+    src: "{{ playbook_dir }}/files/stub_mappings/"
     dest: "{{ wiremock_directory }}/mappings"
-    remote_src: yes
+    remote_src: no
 
 - name: Start WireMock container
   community.docker.docker_container:
@@ -16,7 +16,8 @@
     image: wiremock/wiremock:latest
     restart_policy: always
     published_ports:
-      - "8080:8080"
+      - "{{ wiremock_port }}:8080"
     volumes:
-      - "{{ wiremock_directory }}/mappings:/home/dima/wiremock/mappings"
+      - "{{ wiremock_directory }}/mappings:/home/wiremock/mappings"
+    network_mode: "{{ network_name }}"
     state: started

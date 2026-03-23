@@ -2,7 +2,7 @@
 - name: Verify Selenoid Status
   shell: "curl -I http://localhost:{{ selenoid_port }}"
   register: selenoid_status
-  changed_when: false
+  ignore_errors: yes
 
 - name: Display Selenoid Status
   debug:

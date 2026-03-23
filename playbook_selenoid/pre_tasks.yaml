@@ -1,5 +1,5 @@
 ---
-- name: Get latest Chrome version
+- name: Get Latest Chrome version
   uri:
     url: https://chromedriver.storage.googleapis.com/LATEST_RELEASE
     return_content: yes

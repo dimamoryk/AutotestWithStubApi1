@@ -1,32 +1,24 @@
 {
   "chrome": {
-    "default": "128.0",
+    "default": "{{chrome_default_version}}",
     "versions": {
-      "128.0": {
-        "image": "selenoid/chrome:128.0",
-        "port": "4444",
-        "path": "/"
-      },
-      "127.0": {
-        "image": "selenoid/chrome:127.0",
-        "port": "4444",
-        "path": "/"
-      }
+      {% for version in chrome_versions -%}
+      "{{ version }}": {
+        "image": "selenoid/chrome:{{version}}",
+        "port": "4444"
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
     }
   },
   "firefox": {
-    "default": "112.0",
+    "default": "{{firefox_default_version}}",
     "versions": {
-      "112.0": {
-        "image": "selenoid/firefox:112.0",
-        "port": "4444",
-        "path": "/"
-      },
-      "111.0": {
-        "image": "selenoid/firefox:111.0",
-        "port": "4444",
-        "path": "/"
-      }
+      {% for version in firefox_versions -%}
+      "{{version}}": {
+        "image": "selenoid/firefox:{{version}}",
+        "port": "4444"
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
     }
   }
 }

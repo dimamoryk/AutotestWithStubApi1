@@ -7,9 +7,9 @@
     - /etc/apt/keyrings/docker.gpg
     - /etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list
 
-- name: Update apt cache
-  apt:
-    update_cache: true
+#- name: Update apt cache
+#  apt:
+#    update_cache: true
 
 - name: Install additional packages
   apt:
