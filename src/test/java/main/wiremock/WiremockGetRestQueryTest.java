@@ -44,7 +44,7 @@ public class WiremockGetRestQueryTest {
         );
 
         RestTemplate restTemplate = new RestTemplate();
-        String hostname = String.format("http://localhost:%d", wiremock.getPort());
+        String hostname = String.format("http://wiremock:%d", wiremock.getPort());
         String activeRest = restTemplate.getForObject(hostname + "/user/dima?activetrue", String.class);
         String inactive = restTemplate.getForObject(hostname + "/user/notdima?activefalse", String.class);
         assertEquals("{\"status\":\"active\"}", activeRest);
@@ -65,7 +65,7 @@ public class WiremockGetRestQueryTest {
         );
 
         RestTemplate restTemplate = new RestTemplate();
-        String hostname = String.format("http://localhost:%d", wiremock.getPort());
+        String hostname = String.format("http://wiremock:%d", wiremock.getPort());
         String auth = Base64.getEncoder().encodeToString("user:pass".getBytes());
         String resp = restTemplate.getForObject(hostname + "/secure", String.class, auth);
         assertEquals("{\"ok\": true}", resp);
@@ -85,7 +85,7 @@ public class WiremockGetRestQueryTest {
                         .withBody("{\"ok\": true}")
                 ));
         RestTemplate restTemplate = new RestTemplate();
-        String hostname = String.format("http://localhost:%d", wiremock.getPort());
+        String hostname = String.format("http://wiremock:%d", wiremock.getPort());
         try {
             restTemplate.getForObject(hostname + "/regSlow", String.class);
             fail("Error Timeout");
@@ -110,7 +110,7 @@ public class WiremockGetRestQueryTest {
                 .willSetStateTo("done")
         );
         RestTemplate restTemplate = new RestTemplate();
-        String hostname = String.format("http://localhost:%d", wiremock.getPort());
+        String hostname = String.format("http://wiremock:%d", wiremock.getPort());
         String resp1 = restTemplate.getForObject(hostname + "/item", String.class);
         String resp2 = restTemplate.getForObject(hostname + "/item", String.class);
 
@@ -128,7 +128,7 @@ public class WiremockGetRestQueryTest {
                 )
         );
         RestTemplate restTemplate = new RestTemplate();
-        String hostname = String.format("http://localhost:%d", wiremock.getPort());
+        String hostname = String.format("http://wiremock:%d", wiremock.getPort());
         String resp = restTemplate.getForObject(hostname + "/user/dima", String.class);
         if (resp != null && resp.contains("value")) {
 

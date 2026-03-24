@@ -36,7 +36,7 @@ public class WiremockSpecRestTest {
                 )
         );
         RestTemplate restTemplate = new RestTemplate();
-        String hostname = String.format("http://localhost:%d", wiremock.getPort());
+        String hostname = String.format("http://wiremock:%d", wiremock.getPort());
 
         String getRest = restTemplate.getForObject(hostname + "/resource", String.class);
         assertEquals("{\"get\":true}", getRest);

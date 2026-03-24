@@ -27,7 +27,7 @@ public class UserHelperTest {
                 )
         );
 
-        UserHelper userHelper = new UserHelper(new RestTemplate(), "http://localhost:%d" + wiremock.getPort());
+        UserHelper userHelper = new UserHelper(new RestTemplate(), "http://wiremockt:%d" + wiremock.getPort());
         String userJson = userHelper.getUserById(123);
         assertEquals("{\"name\": \"Test user\", \"score\": 78}", userJson);
     }
@@ -42,7 +42,7 @@ public class UserHelperTest {
                         .withBody("[{\"name\": \"Test user\", \"course\": \"QA\", \"email\": \"test@test.test\", \"age\": 23}]")
                 )
         );
-        UserHelper userHelper = new UserHelper(new RestTemplate(), "http://localhost:%d" + wiremock.getPort());
+        UserHelper userHelper = new UserHelper(new RestTemplate(), "http://wiremock:%d" + wiremock.getPort());
         String usersJson = userHelper.getAllUsers();
         assertEquals("[{\"name\": \"Test user\", \"course\": \"QA\", \"email\": \"test@test.test\", \"age\": 23}]", usersJson);
     }

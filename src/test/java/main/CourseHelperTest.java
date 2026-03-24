@@ -27,7 +27,7 @@ public class CourseHelperTest {
                 )
         );
 
-        CourseHelper courseHelper = new CourseHelper(new RestTemplate(), "http://localhost:%d" + wiremock.getPort());
+        CourseHelper courseHelper = new CourseHelper(new RestTemplate(), "http://wiremock:%d" + wiremock.getPort());
         String coursesJson = courseHelper.getAllCourses();
         assertEquals("[{\"name\": \"QA java\", \"price\": 15000}, {\"name\": \"Java\", \"price\": 12000}]", coursesJson);
     }
